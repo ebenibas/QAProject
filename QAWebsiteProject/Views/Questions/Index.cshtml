@@ -1,0 +1,103 @@
+﻿@model IEnumerable<QAWebsiteProject.Models.Question>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2><b>INTERROGATORY</b></h2>
+
+<p>
+    <b>
+        <u>
+            @Html.ActionLink("Ask New Question", "Create")
+        </u>
+    </b>
+
+</p>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>JobList</title>
+
+    @Scripts.Render("~/bundles/jquery")
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">*@
+    <link href="@Url.Content("~/CssContent/QuestionsCSS.css")" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
+</head>
+<body class="col-md-12 ftco-animate">
+
+    <table id="table" class="display">
+        <thead>
+            <tr>
+                <th>
+
+                </th>
+
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        <b>Title: </b>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        <b>Question: </b>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                    <td>
+                        <b>Date Posted: </b>
+                        @Html.DisplayFor(modelItem => item.DatePosted)
+                    </td>
+                    <td>
+                        <b>User: </b>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                        @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
+                        @Html.ActionLink("Answer this Question", "Details", new { id = item.QuestionID })
+                        @Html.ActionLink("Add Comments", "Create", "Comments", new { id = item.QuestionID})
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function () {
+            $("#table").DataTable();
+
+        });</script>
+</body>
+</html>
+
+
