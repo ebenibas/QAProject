@@ -12,10 +12,33 @@ namespace QAWebsiteProject.Controllers
     public class HomeController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
-        public ActionResult Index()
+
+        public ActionResult Index(string sortOrder)
         {
-            return View();
+            ViewBag.DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.MostAnsSort = string.IsNullOrEmpty(sortOrder) ? "popular" : "";
+            ViewBag.Today = string.IsNullOrEmpty(sortOrder) ? "Last 24 hours" : "";
+            var ques = db.Questions.ToList();
+            switch (sortOrder.ToLower())
+            {
+                case "Date":
+                    ques = ques.OrderBy(q => q.DatePosted).ToList();
+                    break;
+                case "date_desc":
+                    ques = ques.OrderByDescending(q => q.DatePosted).ToList();
+                    break;
+                case "popular":
+                    ques = ques.OrderByDescending(q => q.Answers.Count).ToList();
+                    break;
+                case "Last 24 hours":
+                    var today = DateTime.Today;
+                    ques = ques.OrderByDescending(q => q.Answers.Where(a => a.DateCreated.Date == today).ToList().Count()).ToList();
+                    break;
+            }
+
+            return View(ques);
         }
+        
 
         public ActionResult About()
         {
@@ -49,7 +72,8 @@ namespace QAWebsiteProject.Controllers
         }
         public ActionResult Answers(int? id)
         {
-            var comments = db.Comment.Where(x => x.QuestionID == id).ToArray();
+            var comments = db.Answer.Where(x => x.Id
+            == id).ToArray();
             return Json(comments, JsonRequestBehavior.AllowGet);
         }
 

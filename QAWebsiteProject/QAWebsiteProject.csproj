@@ -171,6 +171,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestionsController.cs" />
@@ -178,13 +179,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911210300126_InitialCreate.cs" />
-    <Compile Include="Migrations\201911210300126_InitialCreate.Designer.cs">
-      <DependentUpon>201911210300126_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911211253406_addInitial.cs" />
-    <Compile Include="Migrations\201911211253406_addInitial.Designer.cs">
-      <DependentUpon>201911211253406_addInitial.cs</DependentUpon>
+    <Compile Include="Migrations\201911220139528_addInitial.cs" />
+    <Compile Include="Migrations\201911220139528_addInitial.Designer.cs">
+      <DependentUpon>201911220139528_addInitial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -195,6 +192,7 @@
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\QuestionTag.cs" />
     <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -267,6 +265,12 @@
     <Content Include="Views\Questions\Index.cshtml" />
     <Content Include="Views\Questions\AllQuestions.cshtml" />
     <Content Include="Views\Tags\ListOfTags.cshtml" />
+    <Content Include="Views\Answers\Create.cshtml" />
+    <Content Include="Views\Answers\Delete.cshtml" />
+    <Content Include="Views\Answers\Details.cshtml" />
+    <Content Include="Views\Answers\Edit.cshtml" />
+    <Content Include="Views\Answers\Index.cshtml" />
+    <Content Include="Views\Questions\HomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -285,11 +289,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911210300126_InitialCreate.resx">
-      <DependentUpon>201911210300126_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911211253406_addInitial.resx">
-      <DependentUpon>201911211253406_addInitial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911220139528_addInitial.resx">
+      <DependentUpon>201911220139528_addInitial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

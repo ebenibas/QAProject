@@ -1,5 +1,10 @@
 ﻿tr{
+
     display: flex;
     flex-direction: column;
     /*flex-wrap: wrap;*/
+}
+table {
+    margin-left: auto;
+    margin-right: auto;
 }

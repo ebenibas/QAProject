@@ -117,50 +117,50 @@
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        <b>
-                            Vote:
-                        </b>
-                        <br />
-                        <a href="#" onclick="upvote();">^</a><h2 id="hVote"></h2><a href="#" onclick="downvote();">v</a>
-                    </td>
-                    <td>
-                        <b>Title: </b>
-                        @Html.ActionLink(item.Title, "Details", "Questions", new { id = item.QuestionID }, null)
-                    </td>
-                    <td>
-                        <b>Question: </b>
-                        @Html.DisplayFor(modelItem => item.description)
-                    </td>
-                    <td>
-                        <b>Date Posted: </b>
-                        @Html.DisplayFor(modelItem => item.DatePosted)
-                    </td>
-                    <td>
-                        <b>User: </b>
-                        @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
-                    </td>
-                    <td>
-                        @foreach (var tags in item.QuestionTags)
-                        {
-                            <div>
-                                Tags: <button>
-                                    @Html.ActionLink(tags.Tag.Title, "Details", "QuestionTags", new { id = item.QuestionID }, null)
-                                </button>
+            <tr>
+                <td>
+                    <b>
+                        Vote:
+                    </b>
+                    <br />
+                    <a href="#" onclick="upvote();">^</a><h2 id="hVote"></h2><a href="#" onclick="downvote();">v</a>
+                </td>
+                <td>
+                    <b>Title: </b>
+                    @Html.ActionLink(item.Title, "Details", "Questions", new { id = item.QuestionID }, null)
+                </td>
+                <td>
+                    <b>Question: </b>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    <b>Date Posted: </b>
+                    @Html.DisplayFor(modelItem => item.DatePosted)
+                </td>
+                <td>
+                    <b>User: </b>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
+                </td>
+                <td>
+                    @foreach (var tags in item.QuestionTags)
+                    {
+                        <div>
+                            Tags: <button>
+                                @Html.ActionLink(tags.Tag.Title, "Details", "QuestionTags", new { id = item.QuestionID }, null)
+                            </button>
 
-                            </div>
-                        }
-                    </td>
+                        </div>
+                    }
+                </td>
 
-                    <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-                        @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
-                        @Html.ActionLink("Answer this Question", "Details", new { id = item.QuestionID })
-                        @Html.ActionLink("Add Answer", "Create", "Answers")
-                    </td>
-                </tr>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
+                    @Html.ActionLink("Answer this Question", "Details", new { id = item.QuestionID })
+                    @Html.ActionLink("Add Answer", "Create", "Answers", new { id = item.QuestionID })
+                </td>
+            </tr>
             }
 
 

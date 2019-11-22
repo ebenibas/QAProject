@@ -13,7 +13,7 @@ namespace QAWebsiteProject.Models
 
         public string Content { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
-
+        public DateTime DateCreated { get; set; }
         public string ApplicationUserId { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
     }

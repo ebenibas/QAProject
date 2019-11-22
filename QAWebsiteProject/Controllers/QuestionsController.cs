@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using QAWebsiteProject.Models;
 
 namespace QAWebsiteProject.Controllers
@@ -17,7 +18,8 @@ namespace QAWebsiteProject.Controllers
         // GET: Questions
         public ActionResult Index()
         {
-            var questions = db.Questions.Include(q => q.ApplicationUser);
+            string currentUserId = User.Identity.GetUserId();
+            var questions = db.Questions.Where(e => e.ApplicationUserId==currentUserId);
             return View(questions.ToList());
         }
 
@@ -52,12 +54,13 @@ namespace QAWebsiteProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                question.DatePosted = DateTime.Now;
                 db.Questions.Add(question);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "FullName", question.ApplicationUserId);
+           ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "FullName", question.ApplicationUserId);
             return View(question);
         }
 
@@ -128,11 +131,47 @@ namespace QAWebsiteProject.Controllers
             }
             base.Dispose(disposing);
         }
-        public ActionResult AllQuestions()
+   
+        public ActionResult AllQuestions(string sortOrder = "" )
         {
-            var question = db.Questions.ToList();
-            return View(question);
+            ViewBag.DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.MostAnsSort = string.IsNullOrEmpty(sortOrder) ? "popular" : "";
+            ViewBag.Today = string.IsNullOrEmpty(sortOrder) ? "Last 24 hours" : "";
+            var ques = db.Questions.ToList();
+            switch (sortOrder.ToLower())
+            {
+                case "Date":
+                    ques = ques.OrderBy(q => q.DatePosted).ToList();
+                    break;
+                case "date_desc":
+                    ques = ques.OrderByDescending(q => q.DatePosted).ToList();
+                    break;
+                case "popular":
+                    ques = ques.OrderByDescending(q => q.Answers.Count).ToList();
+                    break;
+                case "Last 24 hours":
+                    var today = DateTime.Today;
+                    ques = ques.OrderByDescending(q => q.Answers.Where(a => a.DateCreated.Date == today).ToList().Count()).ToList();
+                    break;
+            }
+            
+            return View(ques);
+            
+
         }
+        [HttpPost]
+        public ActionResult AllQuestions(Vote model)
+        {
+            var vote = model.Value;
+            var ques = model.question;
+            db.SaveChanges();
+            return View();
+        }
+        //public ActionResult HomePage()
+        //{
+        //    var questions = db.Questions.ToList();
+        //    return View(questions);
+        //}
         public ActionResult ListOfTags()
         {
             var tags = db.Tags.ToList();

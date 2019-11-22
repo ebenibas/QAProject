@@ -26,6 +26,7 @@ namespace QAWebsiteProject.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Question> Questions { get; set; }
+        public DbSet<Vote> Votes { get; set; }
         public DbSet<Answer> Answer { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }

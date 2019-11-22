@@ -1,0 +1,132 @@
+﻿@model QAWebsiteProject.Models.Answer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Answer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="page-header">
+                <h1><small class="pull-right">{{comments.length}} comments</small> Comments </h1>
+            </div>
+            <div class="comments-list">
+                <div class="media" v-for="com in comments">
+                    <div class="media-body">
+                        <h4 class="media-heading user_name">{{com.Name}}</h4>
+                        {{com.Body}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <br />
+    <p>Your Comment</p>
+    <form onsubmit="return false;">
+        <input type="text" id="Name" placeholder="Your Name" v-model="comment.Name" class="form-control" />
+        <textarea rows="3" placeholder="Your Comment" id="Body" v-model="comment.Body" class="form-control"></textarea>
+        <button class="btn btn-success" v-on:click="submit_comment()">save</button>
+    </form>
+</div>
+</div>
+<p>
+
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<script>
+     var pusher = new Pusher('394d8c5f3ddba1fc9163', {
+      cluster: 'us2'
+    });
+     var channel = pusher.subscribe('my-channel');
+    var app = new Vue({
+        el: '#app',
+        data: {
+            comments: [],
+            comment: {
+                Name: '',
+                Body: '',
+                AnswerID: @Model.Id
+            }
+        },
+        created: function () {
+            this.get_comments();
+            this.listen();
+        },
+        methods: {
+            get_comments: function () {
+                axios.get('@Url.Action("Answers", "Home", new { id = @Model.Id }, protocol: Request.Url.Scheme)')
+                  .then((response)=> {
+
+                      this.comments = response.data;
+
+                  });
+
+            },
+            listen: function () {
+                my_channel.bind("asp_event", (data) => {
+                    if (data.AnswerID == this.comment.AnswerID) {
+                        this.comments.push(data);
+                    }
+
+
+                })
+            },
+            submit_comment: function(){
+                axios.post('@Url.Action("Answer", "Home", new {}, protocol: Request.Url.Scheme)', this.comment)
+                 .then((response)=> {
+                     this.comment.Name = '';
+                     this.comment.Body = '';
+                    alert("Comment Submitted");
+
+                 });
+            }
+        }
+    });
+</script>
+
